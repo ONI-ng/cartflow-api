@@ -4,8 +4,14 @@ let client = null;
 
 const initializeRedis = async () => {
   try {
+    // Only initialize Redis if REDIS_URL is explicitly set
+    if (!process.env.REDIS_URL) {
+      console.log('⚠️  Redis not configured, caching disabled');
+      return null;
+    }
+
     client = redis.createClient({
-      url: process.env.REDIS_URL || 'redis://localhost:6379',
+      url: process.env.REDIS_URL,
       socket: {
         reconnectStrategy: (retries) => Math.min(retries * 50, 500),
       },
@@ -17,7 +23,7 @@ const initializeRedis = async () => {
     await client.connect();
     return client;
   } catch (error) {
-    console.error(`❌ Redis initialization failed: ${error.message}`);
+    console.error(`⚠️  Redis initialization failed (non-critical): ${error.message}`);
     console.log('⚠️ Running without caching');
     return null;
   }
