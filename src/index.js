@@ -14,7 +14,7 @@ const userRoutes = require('./routes/users');
 const productRoutes = require('./routes/products');
 const cartRoutes = require('./routes/cart');
 const orderRoutes = require('./routes/orders');
-const paymentRoutes = require('./routes/payments');
+// const paymentRoutes = require('./routes/payments'); // Disabled for now
 
 // Initialize Express
 const app = express();
@@ -46,7 +46,7 @@ app.use('/api/auth', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/payments', paymentRoutes);
+// app.use('/api/payments', paymentRoutes); // Disabled for now
 
 // 404 handler
 app.use((req, res) => {
