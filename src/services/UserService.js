@@ -24,18 +24,29 @@ class UserService {
       password,
       verificationToken,
       verificationTokenExpires,
+      isVerified: true, // Auto-verify for demo purposes
     });
 
     await user.save();
 
-    // Send verification email
-    await this.sendVerificationEmail(user);
+    // Don't send verification email for demo
+    // await this.sendVerificationEmail(user);
+
+    // Generate token immediately for demo
+    const token = user.generateAuthToken(
+      process.env.JWT_SECRET,
+      process.env.JWT_EXPIRE
+    );
 
     return {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      message: 'Registration successful. Please verify your email.',
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      message: 'Registration successful',
     };
   }
 

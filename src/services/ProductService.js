@@ -72,8 +72,11 @@ class ProductService {
 
     // Apply filters
     if (filters.category) query.category = filters.category;
-    if (filters.minPrice) query.price = { ...query.price, $gte: filters.minPrice };
-    if (filters.maxPrice) query.price = { ...query.price, $lte: filters.maxPrice };
+    if (filters.minPrice || filters.maxPrice) {
+      query.price = {};
+      if (filters.minPrice) query.price.$gte = filters.minPrice;
+      if (filters.maxPrice) query.price.$lte = filters.maxPrice;
+    }
     if (filters.inStock) query.stock = { $gt: 0 };
 
     const [products, total] = await Promise.all([
